@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Game Teka Teki Modern</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Orbitron', sans-serif;
+    background:
+      radial-gradient(circle at center, #0ff 10%, transparent 70%),
+      linear-gradient(135deg, #020024, #090979, #00d4ff);
+    color: #00fff7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  #app {
+    width: 440px;
+    background: rgba(0,0,0,0.85);
+    border-radius: 20px;
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 30px #00fff7,
+      0 0 60px #00fff7;
+    padding: 35px 30px 45px 30px;
+    position: relative;
+  }
+  h1 {
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00fff7;
+    user-select: none;
+    text-shadow:
+      0 0 5px #00fff7,
+      0 0 10px #00fff7;
+  }
+  #start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  button {
+    background: #00fff7;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #00fff7;
+  }
+  button:hover {
+    background: #00c9b8;
+  }
+  #question-screen {
+    display: none;
+    flex-direction: column;
+  }
+  #question-text {
+    font-size: 1.25rem;
+    margin-bottom: 25px;
+    min-height: 80px;
+    user-select: none;
+    text-shadow:
+      0 0 5px #00fff7,
+      0 0 10px #00fff7;
+  }
+  #answer-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    color: #000;
+    background: #fff;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', monospace;
+    box-shadow:
+      inset 0 0 8px #00fff7;
+  }
+  #feedback {
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    min-height: 30px;
+    user-select: none;
+    text-align: center;
+  }
+  #buttons-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  #buttons-row button {
+    flex: 1;
+  }
+  #music-control {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: #00fff7;
+    color: #000;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 10px 18px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #00fff7;
+    transition: background-color 0.3s ease;
+    z-index: 10000;
+  }
+  #music-control:hover {
+    background: #00c9b8;
+  }
+  /* Emoji falling animation */
+  .emoji-fall {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    animation: fallDown 2s ease forwards;
+    user-select: none;
+    z-index: 9999;
+    text-shadow:
+      0 0 10px #ffea00,
+      0 0 20px #ffea00;
+  }
+  @keyframes fallDown {
+    0% {
+      top: -50px;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      top: 100vh;
+      opacity: 0;
+      transform: translateX(40px);
+    }
+  }
+</style>
+</head>
+<body>
+<div id="app" role="main" aria-label="Game Teka Teki">
+  <div id="start-screen" aria-live="polite">
+    <h1>Development By©ZaxinPedia</h1>
+    <button id="start-btn" aria-label="Mulai permainan">Start game</button>
+  </div>
+
+  <div id="question-screen" aria-live="polite">
+    <div id="question-text" tabindex="0"></div>
+    <input type="text" id="answer-input" autocomplete="off" placeholder="Masukkan jawaban..." aria-label="Kolom jawaban" />
+    <div id="feedback" role="alert" aria-live="assertive"></div>
+    <div id="buttons-row">
+      <button id="submit-btn" aria-label="Kirim jawaban">Kirim</button>
+      <button id="next-btn" style="display:none;" aria-label="Pertanyaan berikutnya">Next</button>
+      <button id="retry-btn" style="display:none;" aria-label="Coba lagi">Coba lagi</button>
+      <button id="back-btn" aria-label="Kembali ke menu awal">Back</button>
+    </div>
+  </div>
+</div>
+
+<button id="music-control" aria-pressed="false" aria-label="Kontrol musik">Play Musik</button>
+
+<!-- Audio untuk suara terompet -->
+<audio id="trumpet-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3a7a3a3a3a.mp3?filename=trumpet-fanfare-6185.mp3" preload="auto"></audio>
+
+<!-- Video musik tersembunyi -->
+<video id="music-video" src="https://files.catbox.moe/pcixq3.mp4" loop muted style="display:none;"></video>
+
+<script>
+  (() => {
+    const startBtn = document.getElementById('start-btn');
+    const startScreen = document.getElementById('start-screen');
+    const questionScreen = document.getElementById('question-screen');
+    const questionText = document.getElementById('question-text');
+    const answerInput = document.getElementById('answer-input');
+    const feedback = document.getElementById('feedback');
+    const submitBtn = document.getElementById('submit-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const backBtn = document.getElementById('back-btn');
+    const musicControl = document.getElementById('music-control');
+    const musicVideo = document.getElementById('music-video');
+    const trumpetSound = document.getElementById('trumpet-sound');
+    const app = document.getElementById('app');
+
+    // Data pertanyaan random (matematika, sejarah, ipa, bahasa, dll)
+    // Format: {question: string, answer: string (lowercase trimmed)}
+    const questions = [
+      // Matematika
+      {question: "Berapakah hasil dari 7 x 8?", answer: "56"},
+      {question: "Apa akar kuadrat dari 144?", answer: "12"},
+      {question: "Jika x + 5 = 12, berapakah nilai x?", answer: "7"},
+      // Sejarah
+      {question: "Siapakah presiden pertama Indonesia?", answer: "soekarno"},
+      {question: "Tahun berapakah Proklamasi Kemerdekaan Indonesia?", answer: "1945"},
+      {question: "Siapakah penemu benua Amerika?", answer: "kolumbus"},
+      // IPA
+      {question: "Apa simbol kimia untuk air?", answer: "h2o"},
+      {question: "Planet terdekat dengan matahari adalah?", answer: "merkurius"},
+      {question: "Apa organ utama pernapasan manusia?", answer: "paru-paru"},
+      // Bahasa
+      {question: "Apa sinonim dari kata 'cepat'?", answer: "lancar"},
+      {question: "Bahasa Inggris dari 'kucing' adalah?", answer: "cat"},
+      {question: "Apa arti kata 'bibliografi'?", answer: "daftar pustaka"},
+      // Lain-lain
+      {question: "Berapa jumlah sisi pada segitiga?", answer: "3"},
+      {question: "Apa warna campuran merah dan biru?", answer: "ungu"},
+      {question: "Siapa tokoh fiksi detektif terkenal karya Arthur Conan Doyle?", answer: "sherlock holmes"},
+    ];
+
+    let currentQuestionIndex = null;
+    let isAnswerCorrect = false;
+    let musicPlaying = false;
+
+    function getRandomQuestionIndex() {
+      return Math.floor(Math.random() * questions.length);
+    }
+
+    function showQuestion(index) {
+      currentQuestionIndex = index;
+      const q = questions[index];
+      questionText.textContent = q.question;
+      answerInput.value = "";
+      feedback.textContent = "";
+      isAnswerCorrect = false;
+      submitBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      retryBtn.style.display = "none";
+      answerInput.disabled = false;
+      answerInput.focus();
+    }
+
+    function showStartScreen() {
+      startScreen.style.display = "flex";
+      questionScreen.style.display = "none";
+      feedback.textContent = "";
+      answerInput.value = "";
+      submitBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      retryBtn.style.display = "none";
+      isAnswerCorrect = false;
+    }
+
+    function showQuestionScreen() {
+      startScreen.style.display = "none";
+      questionScreen.style.display = "flex";
+      answerInput.focus();
+    }
+
+    function normalizeAnswer(str) {
+      return str.trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    function createEmojiFall() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji-fall');
+      emoji.textContent = "🎉";
+      // Random horizontal start position inside viewport width minus emoji width (~30px)
+      const leftPos = Math.random() * (window.innerWidth - 30);
+      emoji.style.left = leftPos + "px";
+      emoji.style.top = "-50px";
+      document.body.appendChild(emoji);
+      setTimeout(() => {
+        emoji.remove();
+      }, 2000);
+    }
+
+    // Event Listeners
+    startBtn.addEventListener('click', () => {
+      showQuestionScreen();
+      const idx = getRandomQuestionIndex();
+      showQuestion(idx);
+    });
+
+    submitBtn.addEventListener('click', () => {
+      if (isAnswerCorrect) return; // prevent multiple submit after correct
+      const userAnswer = normalizeAnswer(answerInput.value);
+      if (!userAnswer) return; // ignore empty
+      const correctAnswer = normalizeAnswer(questions[currentQuestionIndex].answer);
+      if (userAnswer === correctAnswer) {
+        // Jawaban benar
+        isAnswerCorrect = true;
+        feedback.style.color = "#00ff00";
+        feedback.textContent = "BENAR ✅";
+        createEmojiFall();
+        trumpetSound.currentTime = 0;
+        trumpetSound.play();
+        submitBtn.style.display = "none";
+        nextBtn.style.display = "inline-block";
+        retryBtn.style.display = "none";
+        answerInput.disabled = true;
+      } else {
+        // Jawaban salah
+        feedback.style.color = "#ff4444";
+        feedback.textContent = "JAWABAN SALAH ❌";
+        retryBtn.style.display = "inline-block";
+        nextBtn.style.display = "none";
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const idx = getRandomQuestionIndex();
+      showQuestion(idx);
+    });
+
+    retryBtn.addEventListener('click', () => {
+      feedback.textContent = "";
+      retryBtn.style.display = "none";
+      answerInput.disabled = false;
+      answerInput.focus();
+    });
+
+    backBtn.addEventListener('click', () => {
+      showStartScreen();
+    });
+
+    musicControl.addEventListener('click', () => {
+      if (!musicPlaying) {
+        musicVideo.muted = false;
+        musicVideo.play();
+        musicControl.textContent = "Pause Musik";
+        musicControl.setAttribute('aria-pressed', 'true');
+        musicPlaying = true;
+      } else {
+        musicVideo.pause();
+        musicControl.textContent = "Play Musik";
+        musicControl.setAttribute('aria-pressed', 'false');
+        musicPlaying = false;
+      }
+    });
+
+    // Initialize
+    showStartScreen();
+  })();
+</script>
+</body>
+</html>
