@@ -3,457 +3,352 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Teka-Teki Game - ZaxinPedia</title>
+<title>Game Teka Teki Modern</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
   /* Reset & base */
   * {
     box-sizing: border-box;
   }
   body, html {
     margin: 0; padding: 0; height: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Orbitron', sans-serif;
     background:
-      radial-gradient(circle at center, #0f2027 0%, #203a43 50%, #2c5364 100%);
-    overflow-x: hidden;
-    color: #eee;
+      radial-gradient(circle at center, #0ff 10%, transparent 70%),
+      linear-gradient(135deg, #020024, #090979, #00d4ff);
+    color: #00fff7;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
-  /* Container */
   #app {
-    width: 100%;
-    max-width: 480px;
-    background: rgba(10, 20, 30, 0.85);
+    width: 440px;
+    background: rgba(0,0,0,0.85);
     border-radius: 20px;
     box-shadow:
-      0 0 20px rgba(0, 255, 255, 0.3),
-      inset 0 0 40px rgba(0, 255, 255, 0.15);
-    padding: 40px 30px 50px;
-    text-align: center;
+      0 0 10px #00fff7,
+      0 0 30px #00fff7,
+      0 0 60px #00fff7;
+    padding: 35px 30px 45px 30px;
     position: relative;
   }
-  /* Title & credit */
-  #menu h1 {
-    font-weight: 600;
-    font-size: 2.5rem;
-    margin-bottom: 0.3em;
+  h1 {
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 20px;
     color: #00fff7;
-    text-shadow: 0 0 10px #00fff7;
-  }
-  #menu p.credit {
-    font-size: 0.9rem;
-    color: #00fff7aa;
-    margin-bottom: 2.5em;
-    letter-spacing: 0.05em;
-  }
-  /* Buttons */
-  button {
-    cursor: pointer;
-    border: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 14px 40px;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px #00fff7aa;
-    background: linear-gradient(135deg, #00fff7, #00c6ff);
-    color: #002b3a;
     user-select: none;
+    text-shadow:
+      0 0 5px #00fff7,
+      0 0 10px #00fff7;
+  }
+  #start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  button {
+    background: #00fff7;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #00fff7;
   }
   button:hover {
-    box-shadow: 0 0 25px #00fff7ff;
-    transform: translateY(-3px);
+    background: #00c9b8;
   }
-  button:active {
-    transform: translateY(0);
-    box-shadow: 0 0 10px #00fff7cc;
-  }
-  /* Secondary buttons */
-  button.secondary {
-    background: transparent;
-    color: #00fff7;
-    box-shadow: inset 0 0 10px #00fff7aa;
-    font-weight: 500;
-    padding: 10px 30px;
-    margin: 0 8px;
-  }
-  button.secondary:hover {
-    background: #00fff7aa;
-    color: #002b3a;
-    box-shadow: 0 0 20px #00fff7ff;
-  }
-  /* Game screen */
-  #game {
+  #question-screen {
     display: none;
-    color: #00fff7;
+    flex-direction: column;
   }
-  #question {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 1.5em;
-    text-shadow: 0 0 8px #00fff7bb;
+  #question-text {
+    font-size: 1.25rem;
+    margin-bottom: 25px;
+    min-height: 80px;
+    user-select: none;
+    text-shadow:
+      0 0 5px #00fff7,
+      0 0 10px #00fff7;
   }
-  input#answer {
+  #answer-input {
     width: 100%;
-    padding: 14px 18px;
+    padding: 12px 15px;
     font-size: 1.1rem;
     border-radius: 12px;
     border: none;
     outline: none;
     color: #000;
     background: #fff;
-    font-weight: 600;
-    box-shadow: inset 0 0 8px #00fff7aa;
-    margin-bottom: 1.5em;
-    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', monospace;
+    box-shadow:
+      inset 0 0 8px #00fff7;
   }
-  input#answer:focus {
-    box-shadow: inset 0 0 15px #00fff7ff;
-  }
-  #submit-btn {
-    width: 100%;
-    margin-bottom: 1.5em;
-  }
-  /* Result message */
-  #result {
-    font-size: 1.5rem;
+  #feedback {
     font-weight: 700;
-    margin-bottom: 1.5em;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    min-height: 30px;
     user-select: none;
-    text-shadow: 0 0 10px;
+    text-align: center;
   }
-  #result.correct {
-    color: #4ade80; /* green */
-    text-shadow: 0 0 15px #4ade80cc;
-  }
-  #result.incorrect {
-    color: #f87171; /* red */
-    text-shadow: 0 0 15px #f87171cc;
-  }
-  /* Controls container */
-  #controls {
+  #buttons-row {
     display: flex;
-    justify-content: center;
-    gap: 1em;
+    justify-content: space-between;
+    gap: 10px;
   }
-  /* Emoji falling container */
-  #emoji-fall {
-    pointer-events: none;
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    overflow: visible;
-    z-index: 9999;
+  #buttons-row button {
+    flex: 1;
   }
-  .emoji {
-    position: absolute;
-    font-size: 2rem;
-    user-select: none;
-    animation-name: fall;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-  }
-  @keyframes fall {
-    0% {
-      transform: translateY(-3rem) rotate(0deg);
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 0;
-    }
-  }
-  /* Music control top right */
   #music-control {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,255,247,0.15);
-    border-radius: 30px;
-    padding: 8px 16px;
-    box-shadow: 0 0 15px #00fff7aa;
-    display: flex;
-    align-items: center;
+    top: 15px;
+    right: 15px;
+    background: #00fff7;
+    color: #000;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 10px 18px;
     cursor: pointer;
     user-select: none;
+    box-shadow:
+      0 0 10px #00fff7,
+      0 0 20px #00fff7;
     transition: background-color 0.3s ease;
     z-index: 10000;
-    font-weight: 600;
-    color: #00fff7;
-    font-size: 1rem;
   }
   #music-control:hover {
-    background: rgba(0,255,247,0.35);
+    background: #00c9b8;
   }
-  #music-control svg {
-    fill: #00fff7;
-    width: 20px;
-    height: 20px;
-    margin-left: 8px;
+  /* Emoji falling animation */
+  .emoji-fall {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    animation: fallDown 2s ease forwards;
+    user-select: none;
+    z-index: 9999;
+    text-shadow:
+      0 0 10px #ffea00,
+      0 0 20px #ffea00;
+  }
+  @keyframes fallDown {
+    0% {
+      top: -50px;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      top: 100vh;
+      opacity: 0;
+      transform: translateX(40px);
+    }
   }
 </style>
 </head>
 <body>
-  <div id="app" role="main" aria-label="Game Teka-Teki ZaxinPedia">
-    <!-- Menu Screen -->
-    <section id="menu" aria-hidden="false">
-      <h1>Teka-Teki Game</h1>
-      <p class="credit">Development By©ZaxinPedia</p>
-      <button id="start-btn" aria-label="Mulai permainan">Start Game</button>
-    </section>
+<div id="app" role="main" aria-label="Game Teka Teki">
+  <div id="start-screen" aria-live="polite">
+    <h1>Development By©ZaxinPedia</h1>
+    <button id="start-btn" aria-label="Mulai permainan">Start game</button>
+  </div>
 
-    <!-- Game Screen -->
-    <section id="game" aria-hidden="true">
-      <p id="question" aria-live="polite" aria-atomic="true"></p>
-      <input type="text" id="answer" autocomplete="off" aria-label="Masukkan jawaban" />
+  <div id="question-screen" aria-live="polite">
+    <div id="question-text" tabindex="0"></div>
+    <input type="text" id="answer-input" autocomplete="off" placeholder="Masukkan jawaban..." aria-label="Kolom jawaban" />
+    <div id="feedback" role="alert" aria-live="assertive"></div>
+    <div id="buttons-row">
       <button id="submit-btn" aria-label="Kirim jawaban">Kirim</button>
-      <p id="result" role="alert" aria-live="assertive"></p>
-      <div id="controls" aria-label="Kontrol permainan">
-        <button id="next-btn" class="secondary" style="display:none;" aria-label="Pertanyaan berikutnya">Next</button>
-        <button id="tryagain-btn" class="secondary" style="display:none;" aria-label="Coba lagi">Coba Lagi</button>
-        <button id="back-btn" class="secondary" aria-label="Kembali ke menu utama">Back</button>
-      </div>
-    </section>
+      <button id="next-btn" style="display:none;" aria-label="Pertanyaan berikutnya">Next</button>
+      <button id="retry-btn" style="display:none;" aria-label="Coba lagi">Coba lagi</button>
+      <button id="back-btn" aria-label="Kembali ke menu awal">Back</button>
+    </div>
   </div>
+</div>
 
-  <!-- Emoji falling container -->
-  <div id="emoji-fall" aria-hidden="true"></div>
+<button id="music-control" aria-pressed="false" aria-label="Kontrol musik">Play Musik</button>
 
-  <!-- Audio -->
-  <audio id="trumpet-sound" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3a3a7a3a3a.mp3?filename=trumpet-fanfare-6187.mp3"></audio>
+<!-- Audio untuk suara terompet -->
+<audio id="trumpet-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3a7a3a3a3a.mp3?filename=trumpet-fanfare-6185.mp3" preload="auto"></audio>
 
-  <!-- Background music from provided video audio track -->
-  <audio id="bg-music" loop preload="auto" src="https://files.catbox.moe/3v51br.mp4"></audio>
-
-  <!-- Music control top right -->
-  <div id="music-control" role="button" aria-label="Toggle musik latar" tabindex="0" title="Toggle Musik">
-    Play Musik
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" >
-      <path d="M3 9v6h4l5 5V4L7 9H3z"/>
-    </svg>
-  </div>
+<!-- Video musik tersembunyi -->
+<video id="music-video" src="https://files.catbox.moe/pcixq3.mp4" loop muted style="display:none;"></video>
 
 <script>
   (() => {
+    const startBtn = document.getElementById('start-btn');
+    const startScreen = document.getElementById('start-screen');
+    const questionScreen = document.getElementById('question-screen');
+    const questionText = document.getElementById('question-text');
+    const answerInput = document.getElementById('answer-input');
+    const feedback = document.getElementById('feedback');
+    const submitBtn = document.getElementById('submit-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const backBtn = document.getElementById('back-btn');
+    const musicControl = document.getElementById('music-control');
+    const musicVideo = document.getElementById('music-video');
+    const trumpetSound = document.getElementById('trumpet-sound');
+    const app = document.getElementById('app');
+
+    // Data pertanyaan random (matematika, sejarah, ipa, bahasa, dll)
+    // Format: {question: string, answer: string (lowercase trimmed)}
     const questions = [
-      { q: "Apa bahasa Inggrisnya makan?", a: "eat" },
-      { q: "Apa bahasa Inggrisnya minum?", a: "drink" },
-      { q: "Apa bahasa Inggrisnya tidur?", a: "sleep" },
-      { q: "Apa bahasa Inggrisnya berlari?", a: "run" },
-      { q: "Apa bahasa Inggrisnya membaca?", a: "read" },
-      { q: "Apa bahasa Inggrisnya menulis?", a: "write" },
-      { q: "Apa bahasa Inggrisnya berbicara?", a: "speak" },
-      { q: "Apa bahasa Inggrisnya belajar?", a: "study" },
-      { q: "Apa bahasa Inggrisnya bekerja?", a: "work" },
-      { q: "Apa bahasa Inggrisnya bermain?", a: "play" }
-      { q: "Apa hasil dari 38 x 3?", a: "114" }
+      // Matematika
+      {question: "Berapakah hasil dari 7 x 8?", answer: "56"},
+      {question: "Apa akar kuadrat dari 144?", answer: "12"},
+      {question: "Jika x + 5 = 12, berapakah nilai x?", answer: "7"},
+      // Sejarah
+      {question: "Siapakah presiden pertama Indonesia?", answer: "soekarno"},
+      {question: "Tahun berapakah Proklamasi Kemerdekaan Indonesia?", answer: "1945"},
+      {question: "Siapakah penemu benua Amerika?", answer: "kolumbus"},
+      // IPA
+      {question: "Apa simbol kimia untuk air?", answer: "h2o"},
+      {question: "Planet terdekat dengan matahari adalah?", answer: "merkurius"},
+      {question: "Apa organ utama pernapasan manusia?", answer: "paru-paru"},
+      // Bahasa
+      {question: "Apa sinonim dari kata 'cepat'?", answer: "lancar"},
+      {question: "Bahasa Inggris dari 'kucing' adalah?", answer: "cat"},
+      {question: "Apa arti kata 'bibliografi'?", answer: "daftar pustaka"},
+      // Lain-lain
+      {question: "Berapa jumlah sisi pada segitiga?", answer: "3"},
+      {question: "Apa warna campuran merah dan biru?", answer: "ungu"},
+      {question: "Siapa tokoh fiksi detektif terkenal karya Arthur Conan Doyle?", answer: "sherlock holmes"},
     ];
 
-    // Elements
-    const menu = document.getElementById('menu');
-    const game = document.getElementById('game');
-    const startBtn = document.getElementById('start-btn');
-    const questionEl = document.getElementById('question');
-    const answerInput = document.getElementById('answer');
-    const submitBtn = document.getElementById('submit-btn');
-    const resultEl = document.getElementById('result');
-    const nextBtn = document.getElementById('next-btn');
-    const tryagainBtn = document.getElementById('tryagain-btn');
-    const backBtn = document.getElementById('back-btn');
-    const emojiFall = document.getElementById('emoji-fall');
-    const trumpetSound = document.getElementById('trumpet-sound');
-    const bgMusic = document.getElementById('bg-music');
-    const musicControl = document.getElementById('music-control');
-
-    let currentIndex = 0;
+    let currentQuestionIndex = null;
+    let isAnswerCorrect = false;
     let musicPlaying = false;
 
-    // Helpers
-    function randomIndex(exclude) {
-      if (questions.length === 1) return 0;
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * questions.length);
-      } while (idx === exclude);
-      return idx;
+    function getRandomQuestionIndex() {
+      return Math.floor(Math.random() * questions.length);
     }
 
-    function showMenu() {
-      menu.style.display = 'block';
-      menu.setAttribute('aria-hidden', 'false');
-      game.style.display = 'none';
-      game.setAttribute('aria-hidden', 'true');
-      resultEl.textContent = '';
-      answerInput.value = '';
+    function showQuestion(index) {
+      currentQuestionIndex = index;
+      const q = questions[index];
+      questionText.textContent = q.question;
+      answerInput.value = "";
+      feedback.textContent = "";
+      isAnswerCorrect = false;
+      submitBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      retryBtn.style.display = "none";
       answerInput.disabled = false;
-      submitBtn.disabled = false;
-      nextBtn.style.display = 'none';
-      tryagainBtn.style.display = 'none';
-      stopMusic();
-    }
-
-    function showGame() {
-      menu.style.display = 'none';
-      menu.setAttribute('aria-hidden', 'true');
-      game.style.display = 'block';
-      game.setAttribute('aria-hidden', 'false');
-      answerInput.focus();
-      playMusic();
-    }
-
-    function setQuestion(index) {
-      currentIndex = index;
-      questionEl.textContent = questions[index].q;
-      answerInput.value = '';
-      resultEl.textContent = '';
-      resultEl.className = '';
-      answerInput.disabled = false;
-      submitBtn.disabled = false;
-      nextBtn.style.display = 'none';
-      tryagainBtn.style.display = 'none';
       answerInput.focus();
     }
 
-    function createEmoji() {
+    function showStartScreen() {
+      startScreen.style.display = "flex";
+      questionScreen.style.display = "none";
+      feedback.textContent = "";
+      answerInput.value = "";
+      submitBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      retryBtn.style.display = "none";
+      isAnswerCorrect = false;
+    }
+
+    function showQuestionScreen() {
+      startScreen.style.display = "none";
+      questionScreen.style.display = "flex";
+      answerInput.focus();
+    }
+
+    function normalizeAnswer(str) {
+      return str.trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    function createEmojiFall() {
       const emoji = document.createElement('div');
-      emoji.classList.add('emoji');
-      emoji.textContent = '🎉';
-      emoji.style.left = Math.random() * 100 + 'vw';
-      emoji.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-      emoji.style.fontSize = (Math.random() * 20 + 20) + 'px';
-      emoji.style.opacity = Math.random() * 0.7 + 0.3;
-      emojiFall.appendChild(emoji);
+      emoji.classList.add('emoji-fall');
+      emoji.textContent = "🎉";
+      // Random horizontal start position inside viewport width minus emoji width (~30px)
+      const leftPos = Math.random() * (window.innerWidth - 30);
+      emoji.style.left = leftPos + "px";
+      emoji.style.top = "-50px";
+      document.body.appendChild(emoji);
       setTimeout(() => {
         emoji.remove();
-      }, 2500);
+      }, 2000);
     }
 
-    function playConfetti() {
-      for(let i=0; i<20; i++) {
-        setTimeout(createEmoji, i * 100);
-      }
-    }
-
-    // Music control
-    function playMusic() {
-      if (!musicPlaying) {
-        bgMusic.play().catch(() => {});
-        musicPlaying = true;
-        updateMusicControlText();
-      }
-    }
-    function stopMusic() {
-      if (musicPlaying) {
-        bgMusic.pause();
-        musicPlaying = false;
-        updateMusicControlText();
-      }
-    }
-    function toggleMusic() {
-      if (musicPlaying) stopMusic();
-      else playMusic();
-    }
-    function updateMusicControlText() {
-      musicControl.textContent = musicPlaying ? 'Pause Musik' : 'Play Musik';
-      const svgNS = "http://www.w3.org/2000/svg";
-      const svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 24 24");
-      svg.setAttribute("aria-hidden", "true");
-      svg.setAttribute("focusable", "false");
-      svg.style.width = "20px";
-      svg.style.height = "20px";
-      svg.style.fill = "#00fff7";
-      svg.style.marginLeft = "8px";
-      if(musicPlaying){
-        // Pause icon
-        const rect1 = document.createElementNS(svgNS, "rect");
-        rect1.setAttribute("x", "6");
-        rect1.setAttribute("y", "5");
-        rect1.setAttribute("width", "4");
-        rect1.setAttribute("height", "14");
-        const rect2 = document.createElementNS(svgNS, "rect");
-        rect2.setAttribute("x", "14");
-        rect2.setAttribute("y", "5");
-        rect2.setAttribute("width", "4");
-        rect2.setAttribute("height", "14");
-        svg.appendChild(rect1);
-        svg.appendChild(rect2);
-      } else {
-        // Play icon
-        const path = document.createElementNS(svgNS, "path");
-        path.setAttribute("d", "M3 9v6h4l5 5V4L7 9H3z");
-        svg.appendChild(path);
-      }
-      musicControl.appendChild(svg);
-    }
-
-    // Event handlers
+    // Event Listeners
     startBtn.addEventListener('click', () => {
-      showGame();
-      setQuestion(randomIndex(-1));
+      showQuestionScreen();
+      const idx = getRandomQuestionIndex();
+      showQuestion(idx);
     });
 
     submitBtn.addEventListener('click', () => {
-      const userAnswer = answerInput.value.trim().toLowerCase();
-      if (!userAnswer) return;
-      const correctAnswer = questions[currentIndex].a.toLowerCase();
+      if (isAnswerCorrect) return; // prevent multiple submit after correct
+      const userAnswer = normalizeAnswer(answerInput.value);
+      if (!userAnswer) return; // ignore empty
+      const correctAnswer = normalizeAnswer(questions[currentQuestionIndex].answer);
       if (userAnswer === correctAnswer) {
-        // Benar
-        resultEl.textContent = 'BENAR ✅';
-        resultEl.className = 'correct';
-        answerInput.disabled = true;
-        submitBtn.disabled = true;
-        nextBtn.style.display = 'inline-block';
-        tryagainBtn.style.display = 'none';
+        // Jawaban benar
+        isAnswerCorrect = true;
+        feedback.style.color = "#00ff00";
+        feedback.textContent = "BENAR ✅";
+        createEmojiFall();
         trumpetSound.currentTime = 0;
         trumpetSound.play();
-        playConfetti();
+        submitBtn.style.display = "none";
+        nextBtn.style.display = "inline-block";
+        retryBtn.style.display = "none";
+        answerInput.disabled = true;
       } else {
-        // Salah
-        resultEl.textContent = 'JAWABAN SALAH ❌';
-        resultEl.className = 'incorrect';
-        nextBtn.style.display = 'none';
-        tryagainBtn.style.display = 'inline-block';
+        // Jawaban salah
+        feedback.style.color = "#ff4444";
+        feedback.textContent = "JAWABAN SALAH ❌";
+        retryBtn.style.display = "inline-block";
+        nextBtn.style.display = "none";
       }
     });
 
     nextBtn.addEventListener('click', () => {
-      setQuestion(randomIndex(currentIndex));
+      const idx = getRandomQuestionIndex();
+      showQuestion(idx);
     });
 
-    tryagainBtn.addEventListener('click', () => {
-      resultEl.textContent = '';
-      resultEl.className = '';
+    retryBtn.addEventListener('click', () => {
+      feedback.textContent = "";
+      retryBtn.style.display = "none";
       answerInput.disabled = false;
-      submitBtn.disabled = false;
-      tryagainBtn.style.display = 'none';
-      answerInput.value = '';
       answerInput.focus();
     });
 
     backBtn.addEventListener('click', () => {
-      showMenu();
+      showStartScreen();
     });
 
-    musicControl.addEventListener('click', toggleMusic);
-    musicControl.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleMusic();
+    musicControl.addEventListener('click', () => {
+      if (!musicPlaying) {
+        musicVideo.muted = false;
+        musicVideo.play();
+        musicControl.textContent = "Pause Musik";
+        musicControl.setAttribute('aria-pressed', 'true');
+        musicPlaying = true;
+      } else {
+        musicVideo.pause();
+        musicControl.textContent = "Play Musik";
+        musicControl.setAttribute('aria-pressed', 'false');
+        musicPlaying = false;
       }
     });
 
-    // Enter key submits answer
-    answerInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        submitBtn.click();
-      }
-    });
-
-    // Initialize menu
-    showMenu();
-    updateMusicControlText();
+    // Initialize
+    showStartScreen();
   })();
 </script>
 </body>
