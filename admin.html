@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Kacungers</title>
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="seal">KG</span>
+      <span class="brand-name">KACUNGERS</span>
+    </div>
+    <div class="topbar-actions">
+      <span class="admin-chip">ADMIN</span>
+      <button class="btn-ghost" id="btnLogout">Keluar</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <section class="hero-card">
+      <span class="sticker-badge sticker-badge--corner">PANEL ADMIN</span>
+      <h1 class="hero-title" style="font-size: 2rem;">Kelola konten <span class="highlight">Kacungers</span></h1>
+      <p class="hero-sub">Cuma akun admin yang bisa nambah artikel dan galeri. Member cuma bisa lihat.</p>
+    </section>
+
+    <!-- ==== Kelola Artikel ==== -->
+    <section class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Artikel</h2>
+        <p class="panel-desc">Tambah atau hapus artikel yang tampil ke publik & member.</p>
+      </div>
+
+      <form id="articleForm" class="admin-form">
+        <input type="text" id="articleTitle" placeholder="Judul artikel" required>
+        <textarea id="articleContent" placeholder="Isi / ringkasan artikel" required rows="3"></textarea>
+        <button type="submit" class="btn-solid">Tambah Artikel</button>
+      </form>
+
+      <div class="card-grid" id="articleGrid">
+        <div class="panel-card panel-card--empty" id="articleEmpty">Belum ada artikel.</div>
+      </div>
+    </section>
+
+    <!-- ==== Kelola Galeri ==== -->
+    <section class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Galeri</h2>
+        <p class="panel-desc">Tambah atau hapus foto galeri lewat URL gambar.</p>
+      </div>
+
+      <form id="galleryForm" class="admin-form">
+        <input type="url" id="galleryUrl" placeholder="URL gambar (https://...)" required>
+        <input type="text" id="galleryCaption" placeholder="Caption (opsional)">
+        <button type="submit" class="btn-solid">Tambah Foto</button>
+      </form>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="panel-card panel-card--empty" id="galleryEmpty">Galeri masih kosong.</div>
+      </div>
+    </section>
+
+    <!-- ==== Daftar Member ==== -->
+    <section class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Member</h2>
+        <p class="panel-desc">Daftar anggota yang sudah terdaftar (read-only).</p>
+      </div>
+      <div class="table-wrap">
+        <table class="tabel-akun">
+          <thead>
+            <tr><th>Nama</th><th>Email</th><th>Role</th><th>Daftar</th></tr>
+          </thead>
+          <tbody id="memberTableBody">
+            <tr><td colspan="4">Memuat...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/admin.js" type="module"></script>
+</body>
+</html>
