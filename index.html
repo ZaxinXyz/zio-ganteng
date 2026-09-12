@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kacungers — Info Seputar Kacung</title>
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="seal">KG</span>
+      <span class="brand-name">KACUNGERS</span>
+    </div>
+    <nav class="topnav">
+      <a href="#artikel">Artikel</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#tentang">Tentang</a>
+    </nav>
+    <div class="topbar-actions" id="authArea">
+      <a href="login.html" class="btn-ghost">Masuk</a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <span class="sticker-badge sticker-badge--corner">INFO HUB</span>
+      <h1 class="hero-title">Semua hal soal <span class="highlight">Kacung</span>,<br>kumpul di sini.</h1>
+      <p class="hero-sub">Kacungers adalah pusat informasi buat siapa aja yang mau tahu lebih dalam soal kacung — cerita, istilah, sampai dokumentasi visualnya.</p>
+      <div class="hero-meta">
+        <span class="meta-pill">📰 Artikel rutin</span>
+        <span class="meta-pill">🖼️ Galeri terkurasi</span>
+        <span class="meta-pill meta-pill--ghost">Dikelola admin</span>
+      </div>
+    </section>
+
+    <section id="artikel" class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Artikel Terbaru</h2>
+        <p class="panel-desc">Bacaan seputar kacung, diperbarui langsung oleh admin.</p>
+      </div>
+      <div class="card-grid" id="articleGrid">
+        <div class="panel-card panel-card--empty" id="articleEmpty">
+          Belum ada artikel. Nantikan update dari admin.
+        </div>
+      </div>
+    </section>
+
+    <section id="galeri" class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Galeri</h2>
+        <p class="panel-desc">Dokumentasi visual seputar kacung.</p>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="panel-card panel-card--empty" id="galleryEmpty">
+          Galeri masih kosong.
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="panel-section panel-section--split">
+      <div class="panel-head">
+        <h2 class="panel-title">Tentang Kacungers</h2>
+        <p class="panel-desc">
+          Kacungers dibuat sebagai ruang informasi, bukan tempat jual-beli jasa.
+          Semua konten — artikel dan galeri — dikurasi langsung oleh admin supaya tetap akurat dan terjaga.
+          Anggota bisa membaca dan menikmati kontennya lewat dashboard, sementara penambahan konten baru sepenuhnya jadi tanggung jawab admin.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>KACUNGERS</span>
+    <span class="foot-dim">Info hub, bukan lapak jasa.</span>
+  </footer>
+
+  <script src="js/index.js"></script>
+</body>
+</html>
