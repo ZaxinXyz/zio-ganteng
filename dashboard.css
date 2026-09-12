@@ -1,0 +1,19 @@
+.topbar-actions{ display: flex; align-items: center; gap: 12px; }
+#btnLogout{
+  background: transparent;
+  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+}
+
+.dashboard{ max-width: 1080px; margin: 0 auto; padding: 0 0 40px; }
+.dashboard .hero-card{
+  margin: 32px 28px 8px;
+  padding: 32px;
+  background: var(--panel);
+  border: 2.5px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.35);
+}
+.dashboard .hero-title{ margin: 12px 0 10px; }
+.dashboard .hero-sub{ margin: 0; }
