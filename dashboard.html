@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Kacungers</title>
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="seal">KG</span>
+      <span class="brand-name">KACUNGERS</span>
+    </div>
+    <div class="topbar-actions">
+      <span class="meta-pill" id="userChip">...</span>
+      <button class="btn-ghost" id="btnLogout">Keluar</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <section class="hero-card">
+      <span class="sticker-badge sticker-badge--corner">DASHBOARD</span>
+      <h1 class="hero-title" style="font-size: 2rem;">Halo, <span class="highlight" id="userName">kacungers</span>.</h1>
+      <p class="hero-sub">Semua artikel dan galeri di sini dikelola langsung oleh admin. Kamu bisa baca dan lihat-lihat sepuasnya.</p>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Artikel</h2>
+        <p class="panel-desc">Info terbaru seputar kacung.</p>
+      </div>
+      <div class="card-grid" id="articleGrid">
+        <div class="panel-card panel-card--empty" id="articleEmpty">Belum ada artikel.</div>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-head">
+        <h2 class="panel-title">Galeri</h2>
+        <p class="panel-desc">Dokumentasi visual dari admin.</p>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="panel-card panel-card--empty" id="galleryEmpty">Galeri masih kosong.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/dashboard.js" type="module"></script>
+</body>
+</html>
